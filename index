@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart Undian – SDN 3 Kesiman</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+/* =====================================================
+   Smart Undian – SDN 3 Kesiman  |  style.css
+   ===================================================== */
+
+:root {
+  --c-bg:      #FFF9F0;
+  --c-sky:     #E0F4FF;
+  --c-primary: #FF6B35;
+  --c-yellow:  #FFD23F;
+  --c-green:   #2ECC71;
+  --c-blue:    #3498DB;
+  --c-purple:  #9B59B6;
+  --c-pink:    #E91E8C;
+  --c-red:     #E74C3C;
+  --c-dark:    #2C3E50;
+  --c-card:    #FFFFFF;
+  --c-border:  #FFD23F;
+  --radius:    18px;
+  --shadow:    0 6px 24px rgba(0,0,0,.10);
+  --shadow-lg: 0 12px 40px rgba(0,0,0,.16);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--c-bg);
+  color: var(--c-dark);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+.hidden { display: none !important; }
+
+/* ── HEADER ── */
+.site-header {
+  background: linear-gradient(135deg, #FF6B35 0%, #FFD23F 50%, #2ECC71 100%);
+  padding: 14px 24px;
+  box-shadow: 0 4px 16px rgba(0,0,0,.15);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.header-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.logo-area { display: flex; align-items: center; gap: 12px; }
+.logo-emoji {
+  font-size: 2.6rem;
+  animation: bobble 2.4s ease-in-out infinite;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,.25));
+}
+@keyframes bobble {
+  0%,100% { transform: translateY(0) rotate(-4deg); }
+  50%      { transform: translateY(-6px) rotate(4deg); }
+}
+.site-title {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.9rem;
+  color: #fff;
+  text-shadow: 2px 3px 0 rgba(0,0,0,.2);
+  line-height: 1;
+}
+.site-sub {
+  font-size: .82rem;
+  font-weight: 700;
+  color: rgba(255,255,255,.88);
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+.star-row {
+  font-size: 1.35rem;
+  letter-spacing: .15em;
+  animation: pulse-stars 1.8s ease-in-out infinite;
+}
+@keyframes pulse-stars { 0%,100% { opacity: 1; } 50% { opacity: .6; } }
+
+/* ── MAIN LAYOUT ── */
+.main-wrap {
+  max-width: 1200px;
+  margin: 24px auto 0;
+  padding: 0 16px 40px;
+  display: grid;
+  grid-template-columns: 280px 1fr 260px;
+  gap: 20px;
+  align-items: start;
+}
+
+.card {
+  background: var(--c-card);
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: var(--shadow);
+  border: 3px solid transparent;
+  transition: border-color .2s;
+}
+.card:hover { border-color: var(--c-yellow); }
+.card-title {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.15rem;
+  margin-bottom: 14px;
+  color: var(--c-dark);
+}
+
+/* ── MODE TOGGLE ── */
+.mode-card { margin-bottom: 16px; }
+.mode-toggle { display: flex; gap: 8px; }
+.mode-btn {
+  flex: 1;
+  padding: 9px 4px;
+  border-radius: 12px;
+  border: 2.5px solid #ddd;
+  background: #f5f5f5;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  font-size: .82rem;
+  cursor: pointer;
+  transition: all .2s;
+}
+.mode-btn.active {
+  background: linear-gradient(135deg, var(--c-primary), var(--c-yellow));
+  border-color: var(--c-primary);
+  color: #fff;
+  box-shadow: 0 3px 10px rgba(255,107,53,.4);
+}
+.mode-btn:not(.active):hover { border-color: var(--c-primary); color: var(--c-primary); }
+
+/* ── NAME INPUT ── */
+.input-row { display: flex; gap: 8px; margin-bottom: 12px; }
+.input-row input {
+  flex: 1;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 2.5px solid #ddd;
+  font-family: 'Nunito', sans-serif;
+  font-size: .9rem;
+  transition: border-color .2s;
+  outline: none;
+}
+.input-row input:focus { border-color: var(--c-primary); }
+
+.participant-list {
+  list-style: none;
+  max-height: 280px;
+  overflow-y: auto;
+  margin-bottom: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-right: 2px;
+}
+.participant-list::-webkit-scrollbar { width: 6px; }
+.participant-list::-webkit-scrollbar-track { background: #f0f0f0; border-radius: 3px; }
+.participant-list::-webkit-scrollbar-thumb { background: var(--c-primary); border-radius: 3px; }
+.participant-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #FFF3EC;
+  border-radius: 10px;
+  padding: 8px 10px;
+  font-size: .88rem;
+  font-weight: 600;
+  border-left: 4px solid var(--c-primary);
+  animation: slide-in .25s ease;
+}
+@keyframes slide-in {
+  from { opacity: 0; transform: translateX(-12px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+.participant-list li.winner-item {
+  border-left-color: var(--c-green);
+  background: #EDFAF4;
+  text-decoration: line-through;
+  opacity: .55;
+}
+.delete-btn {
+  background: none; border: none; cursor: pointer;
+  font-size: 1rem; color: #aaa; transition: color .2s; padding: 0 2px;
+}
+.delete-btn:hover { color: var(--c-red); }
+.action-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.empty-list { text-align: center; color: #bbb; font-size: .85rem; padding: 16px 0; }
+
+/* ── NUMBER MODE ── */
+.range-row {
+  display: flex; align-items: center; gap: 8px;
+  flex-wrap: wrap; margin-bottom: 10px;
+}
+.range-row label { display: flex; align-items: center; gap: 5px; font-weight: 700; font-size: .88rem; }
+.range-row input[type="number"] {
+  width: 62px; padding: 7px 8px;
+  border-radius: 10px; border: 2.5px solid #ddd;
+  font-family: 'Nunito', sans-serif; font-size: .88rem;
+  text-align: center; outline: none; transition: border-color .2s;
+}
+.range-row input[type="number"]:focus { border-color: var(--c-primary); }
+.num-actions { display: flex; gap: 8px; margin-bottom: 12px; }
+.num-grid {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  max-height: 300px; overflow-y: auto; padding-right: 2px;
+}
+.num-grid::-webkit-scrollbar { width: 5px; }
+.num-grid::-webkit-scrollbar-thumb { background: var(--c-blue); border-radius: 3px; }
+.num-chip {
+  display: flex; align-items: center; gap: 4px;
+  background: #EBF5FB; border-radius: 8px; padding: 5px 8px;
+  font-weight: 700; font-size: .8rem; cursor: pointer;
+  border: 2px solid #BDE3F7; transition: all .15s; user-select: none;
+}
+.num-chip input[type="checkbox"] { accent-color: var(--c-blue); cursor: pointer; }
+.num-chip.checked { background: var(--c-blue); color: #fff; border-color: var(--c-blue); }
+.num-chip.winner-num {
+  background: #FDEDEC; color: var(--c-red); border-color: var(--c-red);
+  text-decoration: line-through; opacity: .55;
+}
+
+/* ── CENTER PANEL ── */
+.panel-center { display: flex; flex-direction: column; align-items: center; gap: 20px; }
+.wheel-wrap {
+  position: relative; width: 420px; max-width: 100%;
+  aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+}
+.wheel-pointer {
+  position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+  font-size: 2rem; color: var(--c-primary); z-index: 10;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,.3));
+  animation: pointer-bounce .9s ease-in-out infinite;
+}
+@keyframes pointer-bounce { 0%,100% { top: -14px; } 50% { top: -8px; } }
+#wheelCanvas {
+  width: 100%; height: 100%; border-radius: 50%;
+  box-shadow: var(--shadow-lg), 0 0 0 8px var(--c-yellow), 0 0 0 14px var(--c-primary);
+  cursor: pointer; transition: transform .1s;
+}
+#wheelCanvas:active { transform: scale(.98); }
+.wheel-shine {
+  position: absolute; top: 8%; left: 15%; width: 28%; height: 28%;
+  background: radial-gradient(circle, rgba(255,255,255,.55) 0%, transparent 70%);
+  border-radius: 50%; pointer-events: none;
+}
+.spin-controls { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+.toggle-label {
+  display: flex; align-items: center; gap: 10px;
+  font-weight: 700; font-size: .88rem; cursor: pointer; user-select: none;
+}
+.toggle-label input[type="checkbox"] { display: none; }
+.toggle-track {
+  width: 44px; height: 24px; background: #ddd; border-radius: 12px;
+  position: relative; transition: background .25s; flex-shrink: 0;
+}
+.toggle-thumb {
+  position: absolute; top: 3px; left: 3px; width: 18px; height: 18px;
+  background: #fff; border-radius: 50%; transition: transform .25s;
+  box-shadow: 0 1px 4px rgba(0,0,0,.2);
+}
+.toggle-label input:checked + .toggle-track { background: var(--c-green); }
+.toggle-label input:checked + .toggle-track .toggle-thumb { transform: translateX(20px); }
+
+/* ── RIGHT PANEL ── */
+.winner-card {
+  text-align: center;
+  background: linear-gradient(135deg, #FFF9F0, #FFF0F8);
+  border: 3px solid var(--c-yellow);
+  margin-bottom: 16px;
+  min-height: 160px;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 6px;
+}
+.winner-icon { font-size: 3rem; animation: spin-in .5s ease; }
+@keyframes spin-in {
+  from { transform: scale(0) rotate(-180deg); opacity: 0; }
+  to   { transform: scale(1) rotate(0); opacity: 1; }
+}
+.winner-label {
+  font-size: .78rem; font-weight: 800; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--c-primary);
+}
+.winner-name {
+  font-family: 'Fredoka One', cursive; font-size: 1.55rem;
+  color: var(--c-dark); word-break: break-word; line-height: 1.2;
+}
+.history-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.history-list {
+  list-style: none; display: flex; flex-direction: column; gap: 6px;
+  max-height: 320px; overflow-y: auto;
+}
+.history-list::-webkit-scrollbar { width: 5px; }
+.history-list::-webkit-scrollbar-thumb { background: var(--c-purple); border-radius: 3px; }
+.history-list li {
+  display: flex; align-items: center; gap: 8px;
+  font-size: .85rem; font-weight: 700; padding: 7px 10px;
+  border-radius: 10px; background: #F4F0FA;
+  border-left: 4px solid var(--c-purple); animation: slide-in .2s ease;
+}
+.history-list li .hist-num {
+  background: var(--c-purple); color: #fff; border-radius: 50%;
+  width: 20px; height: 20px; display: flex; align-items: center;
+  justify-content: center; font-size: .7rem; flex-shrink: 0;
+}
+.empty-msg { color: #bbb; font-size: .85rem; text-align: center; padding: 12px 0; list-style: none; }
+
+/* ── BUTTONS ── */
+.btn {
+  padding: 10px 20px; border-radius: 12px; border: none;
+  font-family: 'Nunito', sans-serif; font-weight: 800; font-size: .92rem;
+  cursor: pointer; transition: all .2s; white-space: nowrap;
+}
+.btn:active { transform: scale(.95); }
+.btn-spin {
+  background: linear-gradient(135deg, var(--c-primary) 0%, #FF9A3C 100%);
+  color: #fff; font-family: 'Fredoka One', cursive; font-size: 1.25rem;
+  padding: 14px 36px; border-radius: 50px;
+  box-shadow: 0 6px 20px rgba(255,107,53,.45); letter-spacing: .05em;
+}
+.btn-spin:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(255,107,53,.55); }
+.btn-spin:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+.btn-secondary {
+  background: linear-gradient(135deg, var(--c-blue), #5DADE2);
+  color: #fff; box-shadow: 0 4px 12px rgba(52,152,219,.35);
+  padding: 12px 24px; border-radius: 50px;
+}
+.btn-secondary:hover { transform: translateY(-2px); }
+.btn-add {
+  background: linear-gradient(135deg, var(--c-green), #27AE60);
+  color: #fff; padding: 10px 16px; font-size: 1.1rem;
+  border-radius: 12px; box-shadow: 0 3px 10px rgba(46,204,113,.4);
+}
+.btn-add:hover { transform: translateY(-1px); }
+.btn-warn {
+  background: linear-gradient(135deg, #F39C12, var(--c-red));
+  color: #fff; font-size: .82rem; padding: 8px 14px; border-radius: 10px;
+}
+.btn-info {
+  background: linear-gradient(135deg, var(--c-blue), var(--c-purple));
+  color: #fff; font-size: .82rem; padding: 8px 14px; border-radius: 10px;
+}
+.btn-sm { padding: 7px 14px; font-size: .8rem; }
+.btn-xs { padding: 5px 10px; font-size: .74rem; }
+
+/* ── MODAL ── */
+.modal {
+  position: fixed; inset: 0; background: rgba(0,0,0,.55);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 999; backdrop-filter: blur(4px); animation: fade-in .2s ease;
+}
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+.modal-box {
+  background: #fff; border-radius: 28px; padding: 44px 40px 36px;
+  text-align: center; max-width: 380px; width: 90%;
+  position: relative; box-shadow: var(--shadow-lg);
+  animation: pop-in .35s cubic-bezier(.34,1.56,.64,1); overflow: hidden;
+}
+@keyframes pop-in {
+  from { transform: scale(.7) translateY(30px); opacity: 0; }
+  to   { transform: scale(1) translateY(0); opacity: 1; }
+}
+.modal-confetti { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.confetti-piece {
+  position: absolute; width: 10px; height: 10px; border-radius: 2px;
+  animation: confetti-fall linear forwards;
+}
+@keyframes confetti-fall {
+  0%   { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(420px) rotate(720deg); opacity: 0; }
+}
+.modal-emoji { font-size: 4rem; animation: wiggle .6s ease infinite alternate; }
+@keyframes wiggle {
+  from { transform: rotate(-10deg) scale(1); }
+  to   { transform: rotate(10deg) scale(1.1); }
+}
+.modal-label {
+  font-family: 'Fredoka One', cursive; font-size: 1rem;
+  color: var(--c-primary); text-transform: uppercase;
+  letter-spacing: .08em; margin: 10px 0 4px;
+}
+.modal-winner {
+  font-family: 'Fredoka One', cursive; font-size: 2.2rem;
+  color: var(--c-dark); margin-bottom: 24px; word-break: break-word; line-height: 1.2;
+}
+.modal-close { width: 100%; }
+
+/* ── FOOTER ── */
+.site-footer {
+  background: linear-gradient(135deg, var(--c-primary), var(--c-yellow));
+  text-align: center; padding: 14px 16px;
+  font-weight: 700; font-size: .82rem; color: #fff;
+  letter-spacing: .02em; margin-top: 20px;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .main-wrap { grid-template-columns: 1fr 1fr; grid-template-rows: auto auto; }
+  .panel-left  { grid-column: 1; grid-row: 2; }
+  .panel-center{ grid-column: 1 / -1; grid-row: 1; }
+  .panel-right { grid-column: 2; grid-row: 2; }
+  .wheel-wrap  { width: 340px; }
+}
+@media (max-width: 620px) {
+  .main-wrap { grid-template-columns: 1fr; padding: 0 10px 30px; }
+  .panel-left, .panel-center, .panel-right { grid-column: 1; grid-row: auto; }
+  .wheel-wrap { width: 290px; }
+  .site-title { font-size: 1.5rem; }
+  .star-row   { font-size: 1rem; }
+  .modal-box  { padding: 32px 22px 28px; }
+  .modal-winner { font-size: 1.7rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+  </style>
+</head>
+<body>
+
+  <!-- ===== HEADER ===== -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="logo-area">
+        <span class="logo-emoji">🎡</span>
+        <div>
+          <h1 class="site-title">Smart Undian</h1>
+          <p class="site-sub">SDN 3 Kesiman</p>
+        </div>
+      </div>
+      <div class="star-row" aria-hidden="true">⭐🌈⭐🌟⭐🌈⭐</div>
+    </div>
+  </header>
+
+  <!-- ===== MAIN ===== -->
+  <main class="main-wrap">
+
+    <!-- ── LEFT PANEL ── -->
+    <aside class="panel panel-left">
+
+      <div class="card mode-card">
+        <h2 class="card-title">⚙️ Pengaturan</h2>
+        <div class="mode-toggle">
+          <button id="btnModeName" class="mode-btn active" onclick="setMode('name')">👤 Mode Nama</button>
+          <button id="btnModeNum"  class="mode-btn"        onclick="setMode('number')">🔢 Mode Angka</button>
+        </div>
+      </div>
+
+      <!-- NAME MODE -->
+      <div id="panelName" class="card input-card">
+        <h2 class="card-title">👥 Daftar Peserta</h2>
+        <div class="input-row">
+          <input id="nameInput" type="text" placeholder="Nama peserta…" maxlength="30" />
+          <button class="btn btn-add" onclick="addName()">＋</button>
+        </div>
+        <ul id="nameList" class="participant-list"></ul>
+        <div class="action-row">
+          <button class="btn btn-warn" onclick="clearAll()">🗑️ Hapus Semua</button>
+          <button class="btn btn-info" onclick="loadSample()">📋 Contoh Data</button>
+        </div>
+      </div>
+
+      <!-- NUMBER MODE -->
+      <div id="panelNumber" class="card input-card hidden">
+        <h2 class="card-title">🔢 Pilih Rentang Angka</h2>
+        <div class="range-row">
+          <label>Dari <input id="rangeFrom" type="number" value="1" min="1" max="999" /></label>
+          <label>Sampai <input id="rangeTo" type="number" value="30" min="1" max="999" /></label>
+          <button class="btn btn-add" onclick="generateNumbers()">↺ Buat</button>
+        </div>
+        <div class="num-actions">
+          <button class="btn btn-sm btn-info" onclick="selectAllNums(true)">☑ Pilih Semua</button>
+          <button class="btn btn-sm btn-warn" onclick="selectAllNums(false)">☐ Reset</button>
+        </div>
+        <div id="numGrid" class="num-grid"></div>
+      </div>
+
+    </aside>
+
+    <!-- ── CENTER PANEL ── -->
+    <section class="panel panel-center">
+      <div class="wheel-wrap">
+        <div class="wheel-pointer" aria-hidden="true">▼</div>
+        <canvas id="wheelCanvas" width="420" height="420"></canvas>
+        <div class="wheel-shine" aria-hidden="true"></div>
+      </div>
+      <div class="spin-controls">
+        <button id="btnSpin" class="btn btn-spin" onclick="spinWheel()">🎯 PUTAR!</button>
+        <button class="btn btn-secondary" onclick="randomPick()">⚡ Pilih Cepat</button>
+      </div>
+      <label class="toggle-label">
+        <input type="checkbox" id="chkAvoid" checked />
+        <span class="toggle-track"><span class="toggle-thumb"></span></span>
+        Hindari pemenang yang sama
+      </label>
+    </section>
+
+    <!-- ── RIGHT PANEL ── -->
+    <aside class="panel panel-right">
+      <div class="card winner-card" id="winnerCard">
+        <div class="winner-icon" id="winnerIcon">🎁</div>
+        <p class="winner-label">Pemenang</p>
+        <p class="winner-name" id="winnerName">—</p>
+        <button class="btn btn-sm btn-info" id="btnRemoveWinner" onclick="removeCurrentWinner()" style="display:none">✖ Keluarkan</button>
+      </div>
+      <div class="card history-card">
+        <div class="history-head">
+          <h2 class="card-title">🏆 Riwayat</h2>
+          <button class="btn btn-xs btn-warn" onclick="clearHistory()">Hapus</button>
+        </div>
+        <ul id="historyList" class="history-list">
+          <li class="empty-msg">Belum ada pemenang</li>
+        </ul>
+      </div>
+    </aside>
+
+  </main>
+
+  <!-- ===== MODAL ===== -->
+  <div id="resultModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="modalWinner">
+    <div class="modal-box">
+      <div class="modal-confetti" id="modalConfetti"></div>
+      <div class="modal-emoji" id="modalEmoji">🎉</div>
+      <p class="modal-label">Selamat!</p>
+      <p class="modal-winner" id="modalWinner">—</p>
+      <button class="btn btn-spin modal-close" onclick="closeModal()">OK, Lanjutkan!</button>
+    </div>
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="site-footer">
+    <p>🌟 Smart Undian · SDN 3 Kesiman · Dibuat dengan ❤️ untuk pembelajaran yang menyenangkan 🌟</p>
+  </footer>
+
+  <script>
+/* =====================================================
+   Smart Undian – SDN 3 Kesiman  |  script.js
+   ===================================================== */
+'use strict';
+
+let state = {
+  mode:        'name',
+  names:       [],
+  numbers:     [],
+  winners:     [],
+  spinning:    false,
+  currentWinner: null,
+  avoidRepeat: true,
+};
+
+const WHEEL_COLORS = [
+  '#FF6B35','#FFD23F','#2ECC71','#3498DB','#9B59B6',
+  '#E91E8C','#E74C3C','#1ABC9C','#F39C12','#5DADE2',
+  '#FF8C69','#A8D8EA','#AA96DA','#FCBAD3','#FFFFD2',
+];
+const WINNER_EMOJIS = ['🎉','🏆','⭐','🎊','🥇','🌟','🎁','👑','🌈','🎀'];
+
+/* ── AUDIO ── */
+let audioCtx = null;
+function getAudioCtx() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  return audioCtx;
+}
+function playTick() {
+  try {
+    const ctx = getAudioCtx();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.frequency.setValueAtTime(600, ctx.currentTime);
+    gain.gain.setValueAtTime(0.08, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.05);
+    osc.start(); osc.stop(ctx.currentTime + 0.05);
+  } catch(_) {}
+}
+function playWin() {
+  try {
+    const ctx = getAudioCtx();
+    [523,659,784,1047].forEach((f, i) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.type = 'sine'; osc.frequency.value = f;
+      const t = ctx.currentTime + i * 0.12;
+      gain.gain.setValueAtTime(0, t);
+      gain.gain.linearRampToValueAtTime(0.18, t + 0.05);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.35);
+      osc.start(t); osc.stop(t + 0.38);
+    });
+  } catch(_) {}
+}
+
+/* ── LOCAL STORAGE ── */
+const LS_KEY = 'smartUndian_v2';
+function saveState() {
+  try {
+    localStorage.setItem(LS_KEY, JSON.stringify({
+      mode: state.mode, names: state.names,
+      numbers: state.numbers, winners: state.winners,
+    }));
+  } catch(_) {}
+}
+function loadState() {
+  try {
+    const raw = localStorage.getItem(LS_KEY);
+    if (!raw) return;
+    const s = JSON.parse(raw);
+    state.mode    = s.mode    || 'name';
+    state.names   = s.names   || [];
+    state.numbers = s.numbers || [];
+    state.winners = s.winners || [];
+  } catch(_) {}
+}
+
+/* ── INIT ── */
+document.addEventListener('DOMContentLoaded', () => {
+  loadState();
+  document.getElementById('chkAvoid').checked = true;
+  document.getElementById('chkAvoid').addEventListener('change', e => { state.avoidRepeat = e.target.checked; });
+  document.getElementById('nameInput').addEventListener('keydown', e => { if (e.key === 'Enter') addName(); });
+  document.getElementById('resultModal').addEventListener('click', e => {
+    if (e.target === document.getElementById('resultModal')) closeModal();
+  });
+  setMode(state.mode, true);
+  if (state.numbers.length === 0) generateNumbers();
+  else renderNumberGrid();
+  renderNameList();
+  renderHistory();
+  drawWheel();
+});
+
+/* ── MODE ── */
+function setMode(mode, silent = false) {
+  state.mode = mode;
+  document.getElementById('btnModeName').classList.toggle('active', mode === 'name');
+  document.getElementById('btnModeNum').classList.toggle('active',  mode === 'number');
+  document.getElementById('panelName').classList.toggle('hidden',   mode !== 'name');
+  document.getElementById('panelNumber').classList.toggle('hidden', mode !== 'number');
+  if (!silent) { saveState(); drawWheel(); }
+}
+
+/* ── PARTICIPANTS ── */
+function getParticipants() {
+  if (state.mode === 'name') {
+    return state.names.filter(n => !state.avoidRepeat || !state.winners.includes(n));
+  }
+  return state.numbers
+    .filter(n => n.checked && (!state.avoidRepeat || !state.winners.includes(String(n.value))))
+    .map(n => String(n.value));
+}
+
+/* ── NAME MANAGEMENT ── */
+function addName() {
+  const input = document.getElementById('nameInput');
+  const val = input.value.trim();
+  if (!val) { input.focus(); return; }
+  if (state.names.includes(val)) {
+    input.style.borderColor = 'var(--c-red)';
+    setTimeout(() => input.style.borderColor = '', 1000);
+    return;
+  }
+  state.names.push(val);
+  input.value = ''; input.focus();
+  saveState(); renderNameList(); drawWheel();
+}
+function removeName(i) {
+  state.names.splice(i, 1);
+  saveState(); renderNameList(); drawWheel();
+}
+function clearAll() {
+  if (!confirm('Hapus semua peserta dan riwayat?')) return;
+  state.names = []; state.winners = []; state.currentWinner = null;
+  saveState(); renderNameList(); renderHistory(); resetWinnerDisplay(); drawWheel();
+}
+function loadSample() {
+  ['Agus','Budi','Citra','Dewi','Eko','Fani','Gita','Hendra',
+   'Indah','Joko','Kartika','Luki','Maya','Nanda','Oki']
+  .forEach(n => { if (!state.names.includes(n)) state.names.push(n); });
+  saveState(); renderNameList(); drawWheel();
+}
+function renderNameList() {
+  const ul = document.getElementById('nameList');
+  ul.innerHTML = '';
+  if (state.names.length === 0) {
+    ul.innerHTML = '<li class="empty-list">Belum ada peserta 😊</li>'; return;
+  }
+  state.names.forEach((name, i) => {
+    const li = document.createElement('li');
+    if (state.avoidRepeat && state.winners.includes(name)) li.classList.add('winner-item');
+    li.innerHTML = `<span>${name}</span>
+      <button class="delete-btn" title="Hapus" onclick="removeName(${i})">✕</button>`;
+    ul.appendChild(li);
+  });
+}
+
+/* ── NUMBER MANAGEMENT ── */
+function generateNumbers() {
+  const from = parseInt(document.getElementById('rangeFrom').value) || 1;
+  const to   = parseInt(document.getElementById('rangeTo').value)   || 30;
+  if (from > to || to - from > 999) { alert('Rentang angka tidak valid (maks 1000 angka).'); return; }
+  state.numbers = [];
+  for (let v = from; v <= to; v++) state.numbers.push({ value: v, checked: true });
+  saveState(); renderNumberGrid(); drawWheel();
+}
+function selectAllNums(checked) {
+  state.numbers.forEach(n => n.checked = checked);
+  saveState(); renderNumberGrid(); drawWheel();
+}
+function toggleNum(value) {
+  const n = state.numbers.find(n => n.value === value);
+  if (n) { n.checked = !n.checked; saveState(); renderNumberGrid(); drawWheel(); }
+}
+function renderNumberGrid() {
+  const grid = document.getElementById('numGrid');
+  grid.innerHTML = '';
+  state.numbers.forEach(n => {
+    const div = document.createElement('div');
+    div.className = 'num-chip' +
+      (n.checked ? ' checked' : '') +
+      (state.avoidRepeat && state.winners.includes(String(n.value)) ? ' winner-num' : '');
+    div.innerHTML = `<input type="checkbox" ${n.checked ? 'checked' : ''} onchange="toggleNum(${n.value})" /> ${n.value}`;
+    div.addEventListener('click', e => { if (e.target.tagName !== 'INPUT') toggleNum(n.value); });
+    grid.appendChild(div);
+  });
+}
+
+/* ── HISTORY ── */
+function renderHistory() {
+  const ul = document.getElementById('historyList');
+  ul.innerHTML = '';
+  if (state.winners.length === 0) {
+    ul.innerHTML = '<li class="empty-msg">Belum ada pemenang</li>'; return;
+  }
+  [...state.winners].reverse().forEach((w, i) => {
+    const li = document.createElement('li');
+    li.innerHTML = `<span class="hist-num">${state.winners.length - i}</span> ${w}`;
+    ul.appendChild(li);
+  });
+}
+function clearHistory() {
+  if (!confirm('Hapus seluruh riwayat pemenang?')) return;
+  state.winners = []; state.currentWinner = null;
+  saveState(); renderHistory(); renderNameList(); renderNumberGrid(); resetWinnerDisplay(); drawWheel();
+}
+function resetWinnerDisplay() {
+  document.getElementById('winnerName').textContent = '—';
+  document.getElementById('winnerIcon').textContent = '🎁';
+  document.getElementById('btnRemoveWinner').style.display = 'none';
+}
+function removeCurrentWinner() {
+  if (!state.currentWinner) return;
+  state.winners = state.winners.filter(w => w !== state.currentWinner);
+  state.currentWinner = null;
+  saveState(); renderHistory(); renderNameList(); renderNumberGrid(); resetWinnerDisplay(); drawWheel();
+}
+
+/* ── WHEEL DRAWING ── */
+function drawWheel(rotation = 0) {
+  const canvas = document.getElementById('wheelCanvas');
+  const ctx = canvas.getContext('2d');
+  const cx = canvas.width / 2, cy = canvas.height / 2, r = cx - 12;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  const participants = getParticipants();
+
+  if (participants.length === 0) {
+    ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2);
+    ctx.fillStyle = '#f0f0f0'; ctx.fill();
+    ctx.fillStyle = '#aaa'; ctx.font = 'bold 18px Nunito, sans-serif';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText('Tambahkan peserta dulu! 😊', cx, cy);
+    drawCenter(ctx, cx, cy); return;
+  }
+
+  const sliceAngle = (Math.PI * 2) / participants.length;
+  participants.forEach((label, i) => {
+    const startAngle = rotation + i * sliceAngle;
+    const endAngle   = startAngle + sliceAngle;
+    ctx.beginPath(); ctx.moveTo(cx, cy);
+    ctx.arc(cx, cy, r, startAngle, endAngle); ctx.closePath();
+    ctx.fillStyle = WHEEL_COLORS[i % WHEEL_COLORS.length]; ctx.fill();
+    ctx.strokeStyle = 'rgba(255,255,255,0.7)'; ctx.lineWidth = 2.5; ctx.stroke();
+
+    ctx.save(); ctx.translate(cx, cy); ctx.rotate(startAngle + sliceAngle / 2);
+    ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+    const maxWidth = r * 0.72;
+    const fontSize = participants.length <= 10 ? 15 : participants.length <= 20 ? 12 : 10;
+    ctx.font = `bold ${fontSize}px Nunito, sans-serif`;
+    ctx.fillStyle = '#fff'; ctx.shadowColor = 'rgba(0,0,0,0.35)'; ctx.shadowBlur = 3;
+    let lbl = label;
+    if (ctx.measureText(lbl).width > maxWidth)
+      lbl = lbl.substring(0, Math.floor(lbl.length * maxWidth / ctx.measureText(lbl).width) - 1) + '…';
+    ctx.fillText(lbl, r - 10, 0); ctx.restore();
+  });
+
+  ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2);
+  ctx.strokeStyle = 'rgba(255,255,255,0.85)'; ctx.lineWidth = 6; ctx.stroke();
+  drawCenter(ctx, cx, cy);
+}
+
+function drawCenter(ctx, cx, cy) {
+  ctx.beginPath(); ctx.arc(cx, cy, 28, 0, Math.PI * 2);
+  const grad = ctx.createRadialGradient(cx-5, cy-5, 4, cx, cy, 28);
+  grad.addColorStop(0, '#fff'); grad.addColorStop(1, '#FFD23F');
+  ctx.fillStyle = grad; ctx.fill();
+  ctx.strokeStyle = '#FF6B35'; ctx.lineWidth = 3; ctx.stroke();
+  ctx.font = '22px serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText('⭐', cx, cy);
+}
+
+/* ── SPIN ── */
+function spinWheel() {
+  if (state.spinning) return;
+  const participants = getParticipants();
+  if (participants.length === 0) {
+    alert('Tidak ada peserta yang tersedia! Tambahkan nama atau angka terlebih dahulu.'); return;
+  }
+  if (participants.length === 1) { recordWinner(participants[0]); return; }
+
+  state.spinning = true;
+  document.getElementById('btnSpin').disabled = true;
+
+  const winnerIndex = Math.floor(Math.random() * participants.length);
+  const sliceAngle  = (Math.PI * 2) / participants.length;
+  const targetSliceCenter = winnerIndex * sliceAngle + sliceAngle / 2;
+  const extraSpins = (5 + Math.random() * 5) * Math.PI * 2;
+  const finalRotation = -Math.PI / 2 - targetSliceCenter + extraSpins;
+  const duration = 4000 + Math.random() * 1500;
+  const startTime = performance.now();
+  let lastTickAngle = 0;
+
+  function easeOut(t) { return 1 - Math.pow(1 - t, 4); }
+  function animate(now) {
+    const t = Math.min((now - startTime) / duration, 1);
+    const currentRotation = finalRotation * easeOut(t);
+    const tickAngle = currentRotation % sliceAngle;
+    if (Math.abs(tickAngle - lastTickAngle) > sliceAngle * 0.5) { playTick(); lastTickAngle = tickAngle; }
+    drawWheel(currentRotation);
+    if (t < 1) { requestAnimationFrame(animate); }
+    else {
+      state.spinning = false;
+      document.getElementById('btnSpin').disabled = false;
+      recordWinner(participants[winnerIndex]);
+    }
+  }
+  requestAnimationFrame(animate);
+}
+
+/* ── RANDOM PICK ── */
+function randomPick() {
+  if (state.spinning) return;
+  const participants = getParticipants();
+  if (participants.length === 0) { alert('Tidak ada peserta yang tersedia!'); return; }
+  recordWinner(participants[Math.floor(Math.random() * participants.length)]);
+}
+
+/* ── RECORD WINNER ── */
+function recordWinner(winner) {
+  state.currentWinner = winner;
+  if (!state.avoidRepeat || !state.winners.includes(winner)) state.winners.push(winner);
+  saveState(); renderHistory(); renderNameList(); renderNumberGrid();
+  const emoji = WINNER_EMOJIS[Math.floor(Math.random() * WINNER_EMOJIS.length)];
+  document.getElementById('winnerIcon').textContent = emoji;
+  document.getElementById('winnerName').textContent = winner;
+  document.getElementById('btnRemoveWinner').style.display = 'inline-flex';
+  playWin(); drawWheel(); showModal(winner, emoji);
+}
+
+/* ── MODAL + CONFETTI ── */
+function showModal(winner, emoji) {
+  document.getElementById('modalWinner').textContent = winner;
+  document.getElementById('modalEmoji').textContent  = emoji;
+  document.getElementById('resultModal').classList.remove('hidden');
+  spawnConfetti();
+}
+function closeModal() {
+  document.getElementById('resultModal').classList.add('hidden');
+  document.getElementById('modalConfetti').innerHTML = '';
+}
+function spawnConfetti() {
+  const container = document.getElementById('modalConfetti');
+  container.innerHTML = '';
+  const colors = ['#FF6B35','#FFD23F','#2ECC71','#3498DB','#9B59B6','#E91E8C','#E74C3C','#1ABC9C'];
+  for (let i = 0; i < 60; i++) {
+    const el = document.createElement('div');
+    el.className = 'confetti-piece';
+    el.style.cssText = `
+      left:${Math.random()*100}%;
+      background:${colors[Math.floor(Math.random()*colors.length)]};
+      width:${6+Math.random()*8}px; height:${6+Math.random()*8}px;
+      border-radius:${Math.random()>.5?'50%':'2px'};
+      animation-duration:${1.5+Math.random()*2}s;
+      animation-delay:${Math.random()*.6}s;
+      transform:rotate(${Math.random()*360}deg);
+    `;
+    container.appendChild(el);
+  }
+}
+  </script>
+</body>
+</html>
